@@ -1,0 +1,2023 @@
+# PRODUCT REQUIREMENTS DOCUMENT
+
+# IT HELPDESK TICKETING, KNOWLEDGE BASE & ADMINISTRATOR DASHBOARD
+
+Version: 1.0
+Status: Draft – Discovery Completed
+Date: 21 August 2026
+
+
+==================================================
+1. PRODUCT OVERVIEW
+==================================================
+
+IT Helpdesk adalah aplikasi web untuk menerima, mengelola, melacak, menyelesaikan, dan menganalisis permasalahan IT.
+
+Produk terdiri dari dua area utama:
+
+1. Public User Portal
+2. Administrator Portal
+
+Public User Portal tidak memerlukan login agar user dapat melaporkan permasalahan IT dengan cepat tanpa mengganggu pekerjaan mereka.
+
+Administrator Portal membutuhkan authentication dan digunakan untuk mengelola seluruh proses ticketing, knowledge base, teknisi, master data, dashboard, KPI, analytics, reporting, dan audit.
+
+Komponen utama:
+
+- Ticket Management
+- Public Ticket Creation
+- Ticket Tracking
+- Knowledge Base
+- Technician Management
+- Department Management
+- Category Management
+- Problem Type Management
+- Priority Management
+- Administrator Dashboard
+- KPI
+- Technician Performance
+- Ticket Analytics
+- Recurring Problem Analytics
+- SLA Analytics
+- Reporting
+- Audit Log
+
+
+==================================================
+2. EXECUTIVE SUMMARY
+==================================================
+
+Sistem dirancang untuk memberikan pengalaman pelaporan masalah IT yang sederhana bagi user.
+
+User tidak perlu membuat akun atau login.
+
+User dapat:
+
+- Membuka Knowledge Base secara opsional.
+- Membuat ticket.
+- Mendapatkan Ticket Number dan Tracking Code.
+- Melacak ticket menggunakan mekanisme tracking.
+- Melihat status dan progress ticket.
+
+Administrator merupakan satu-satunya role internal pada MVP.
+
+Administrator bertanggung jawab atas seluruh proses:
+
+User Create Ticket
+→ Open
+→ Received
+→ Escalated
+→ In Progress
+→ Resolved
+→ Closed
+
+Administrator dapat mengeskalasi ticket kepada teknisi.
+
+Teknisi dicatat pada ticket agar sistem dapat menghasilkan KPI berdasarkan teknisi.
+
+Tidak terdapat status Reopened.
+
+Jika masalah yang sama terjadi kembali setelah ticket Closed, user harus membuat ticket baru.
+
+Tujuannya adalah agar recurring problem dapat dihitung secara akurat dan digunakan untuk pengambilan keputusan.
+
+
+==================================================
+3. PROBLEM STATEMENT
+==================================================
+
+Proses penanganan permasalahan IT membutuhkan sistem terpusat untuk:
+
+- Menerima laporan masalah.
+- Mencatat detail masalah.
+- Menentukan kategori dan prioritas.
+- Menentukan status pekerjaan.
+- Mencatat teknisi yang menangani.
+- Menyimpan histori.
+- Mengukur waktu penanganan.
+- Mengukur performa teknisi.
+- Mengidentifikasi masalah yang sering terjadi.
+- Menyediakan informasi troubleshooting mandiri.
+
+Sistem login untuk requester tidak diinginkan karena dapat menambah friction bagi user yang sedang bekerja.
+
+Oleh karena itu sistem menggunakan public ticket submission dan public ticket tracking tanpa akun requester.
+
+
+==================================================
+4. BUSINESS GOALS
+==================================================
+
+BG-001
+Mempermudah user melaporkan permasalahan IT tanpa harus login.
+
+BG-002
+Memusatkan seluruh proses pengelolaan ticket pada Administrator.
+
+BG-003
+Memudahkan Administrator melakukan eskalasi kepada teknisi.
+
+BG-004
+Menyediakan data yang cukup untuk menghitung KPI teknisi.
+
+BG-005
+Menyediakan dashboard operasional yang dapat digunakan untuk monitoring.
+
+BG-006
+Mengidentifikasi recurring problem untuk membantu pengambilan keputusan.
+
+BG-007
+Menyediakan Knowledge Base sebagai opsi self-service troubleshooting.
+
+
+==================================================
+5. OBJECTIVES
+==================================================
+
+Produk harus mampu:
+
+1. Mempercepat proses pembuatan ticket.
+2. Memberikan tracking ticket kepada requester.
+3. Menyediakan workflow ticket yang jelas.
+4. Mencatat teknisi yang menangani ticket.
+5. Menghasilkan KPI operasional.
+6. Menghasilkan KPI per teknisi.
+7. Menghasilkan analitik recurring problem.
+8. Menyediakan Knowledge Base.
+9. Menyediakan histori ticket.
+10. Menyediakan audit trail untuk aktivitas Administrator.
+
+
+==================================================
+6. TARGET USERS & PERSONAS
+==================================================
+
+6.1 REQUESTER / USER
+
+Tujuan:
+
+Melaporkan masalah IT dan mengetahui progress penyelesaiannya.
+
+Karakteristik:
+
+- Tidak membutuhkan akun.
+- Tidak membutuhkan password.
+- Tidak memiliki dashboard internal.
+- Tidak dapat melihat ticket user lain.
+
+Hak utama:
+
+- View Knowledge Base.
+- Create Ticket.
+- Track Ticket sendiri.
+
+
+6.2 ADMINISTRATOR
+
+Administrator adalah pengelola utama sistem.
+
+Administrator bertanggung jawab terhadap:
+
+- Ticket management.
+- Ticket processing.
+- Technician assignment.
+- Status update.
+- Resolution.
+- Ticket closure.
+- User/requester management.
+- Master data.
+- Knowledge Base.
+- Dashboard.
+- KPI.
+- Analytics.
+- Reporting.
+- Audit.
+
+
+6.3 TECHNICIAN
+
+Technician adalah pihak yang menerima pekerjaan teknis setelah Administrator melakukan eskalasi.
+
+Untuk MVP:
+
+[ASSUMPTION]
+
+Technician tidak membutuhkan login ke sistem.
+
+Administrator mencatat:
+
+- Technician.
+- Waktu assignment.
+- Waktu mulai.
+- Hasil pekerjaan.
+- Waktu penyelesaian.
+
+Jika di masa depan teknisi membutuhkan akses langsung ke sistem, dapat ditambahkan sebagai role baru.
+
+
+==================================================
+7. USER JOURNEY
+==================================================
+
+7.1 USER JOURNEY – CREATE TICKET
+
+User membuka halaman Helpdesk.
+
+User melihat:
+
+- Pusat Knowledge.
+- Buat Ticket.
+- Lacak Ticket.
+
+User dapat memilih:
+
+OPTION A
+
+Knowledge Base
+→ Troubleshooting
+→ Selesai sendiri.
+
+OPTION B
+
+Create Ticket
+→ Submit
+→ Mendapatkan Ticket Number + Tracking Code.
+
+Knowledge Base bukan mandatory step.
+
+
+7.2 USER JOURNEY – TRACKING
+
+User:
+
+1. Membuka Track Ticket.
+2. Memasukkan Ticket Number.
+3. Memasukkan Tracking Code.
+4. Sistem melakukan validasi.
+5. Sistem menampilkan ticket yang sesuai.
+6. User melihat status dan progress ticket.
+
+
+7.3 ADMINISTRATOR JOURNEY
+
+Administrator:
+
+Login
+→ Dashboard
+→ Ticket Queue
+→ Open Ticket
+→ Review
+→ Received
+→ Assign Technician
+→ Escalated
+→ In Progress
+→ Technical Work
+→ Resolution
+→ Resolved
+→ Close Ticket
+→ Closed
+
+
+==================================================
+8. SCOPE
+==================================================
+
+8.1 IN SCOPE
+
+PUBLIC PORTAL
+
+- Knowledge Base.
+- Create Ticket.
+- Track Ticket.
+
+ADMINISTRATOR PORTAL
+
+- Authentication.
+- Dashboard.
+- Ticket Management.
+- Technician Management.
+- Department Management.
+- Category Management.
+- Problem Type Management.
+- Priority Management.
+- Knowledge Base Management.
+- Reporting.
+- KPI.
+- Analytics.
+- Audit Log.
+
+TICKET
+
+- Create.
+- View.
+- Search.
+- Filter.
+- Update.
+- Assign Technician.
+- Escalate.
+- Resolve.
+- Close.
+- History.
+
+
+8.2 OUT OF SCOPE
+
+- Requester account.
+- Requester login.
+- Requester dashboard.
+- Automatic Reopened ticket.
+- Mandatory Knowledge Base sebelum ticket creation.
+- Technician portal.
+- Technician login.
+
+External integrations:
+
+[TBD]
+
+
+8.3 FUTURE SCOPE
+
+Potential future features:
+
+- Technician login.
+- Email notification.
+- WhatsApp notification.
+- Mobile application.
+- Asset management.
+- Inventory integration.
+- Automated SLA notification.
+- Advanced reporting.
+- AI troubleshooting.
+- AI ticket classification.
+
+
+==================================================
+9. FEATURE OVERVIEW
+==================================================
+
+9.1 PUBLIC PORTAL
+
+- Home.
+- Knowledge Base.
+- Create Ticket.
+- Track Ticket.
+
+
+9.2 TICKET MANAGEMENT
+
+- Ticket list.
+- Ticket detail.
+- Search.
+- Filter.
+- Status management.
+- Priority.
+- Category.
+- Problem Type.
+- Technician.
+- Resolution.
+- Timeline.
+- Closure.
+
+
+9.3 KNOWLEDGE BASE
+
+- Article list.
+- Search.
+- Category.
+- Article detail.
+- Create article.
+- Edit article.
+- Publish article.
+- Archive article.
+
+
+9.4 DASHBOARD
+
+- KPI Cards.
+- Ticket Trend.
+- Ticket by Category.
+- Ticket by Priority.
+- Ticket by Department.
+- Ticket by Technician.
+- SLA Performance.
+- Backlog.
+- Backlog Aging.
+- Recurring Problems.
+- Knowledge Base Analytics.
+
+
+==================================================
+10. FUNCTIONAL REQUIREMENTS
+==================================================
+
+PUBLIC TICKET
+
+FR-001
+System shall allow requester to create a ticket without login.
+
+FR-002
+System shall require:
+
+- Name.
+- Department.
+- Category.
+- Priority.
+- Problem Description.
+
+FR-003
+System shall generate a unique Ticket Number.
+
+FR-004
+System shall generate a Tracking Code.
+
+FR-005
+System shall display or provide Ticket Number and Tracking Code after successful ticket creation.
+
+FR-006
+System shall allow requester to track ticket.
+
+FR-007
+System shall prevent requester from viewing another ticket without valid tracking credentials.
+
+
+ADMINISTRATOR
+
+FR-008
+System shall require Administrator authentication.
+
+FR-009
+System shall allow Administrator to view all tickets.
+
+FR-010
+System shall allow Administrator to search tickets.
+
+FR-011
+System shall allow Administrator to filter tickets.
+
+FR-012
+System shall allow Administrator to update ticket status.
+
+FR-013
+System shall allow Administrator to change priority.
+
+FR-014
+System shall allow Administrator to change category.
+
+FR-015
+System shall allow Administrator to assign Technician.
+
+FR-016
+System shall record Technician assignment timestamp.
+
+FR-017
+System shall allow Administrator to record resolution notes.
+
+FR-018
+System shall allow Administrator to close ticket.
+
+
+WORKFLOW
+
+FR-019
+System shall support:
+
+Open
+→ Received
+→ Escalated
+→ In Progress
+→ Resolved
+→ Closed
+
+FR-020
+System shall prevent invalid status transitions.
+
+FR-021
+System shall not provide Reopened status.
+
+FR-022
+A new occurrence must be represented as a new ticket.
+
+
+KNOWLEDGE BASE
+
+FR-023
+System shall allow public users to browse Knowledge Base.
+
+FR-024
+System shall allow public users to search articles.
+
+FR-025
+System shall allow Administrator to create articles.
+
+FR-026
+System shall allow Administrator to edit articles.
+
+FR-027
+System shall allow Administrator to publish articles.
+
+FR-028
+System shall allow Administrator to archive articles.
+
+FR-029
+System shall categorize Knowledge Base articles.
+
+
+DASHBOARD
+
+FR-030
+System shall provide dashboard KPI.
+
+FR-031
+System shall provide ticket trend visualization.
+
+FR-032
+System shall provide ticket distribution by category.
+
+FR-033
+System shall provide ticket distribution by priority.
+
+FR-034
+System shall provide ticket distribution by department.
+
+FR-035
+System shall provide technician performance analytics.
+
+FR-036
+System shall provide SLA analytics.
+
+FR-037
+System shall provide backlog analytics.
+
+FR-038
+System shall provide recurring problem analytics.
+
+FR-039
+System shall provide Knowledge Base analytics.
+
+
+==================================================
+11. USER STORIES
+==================================================
+
+US-001
+
+As a requester,
+I want to create a ticket without login,
+so that I can report an IT problem quickly.
+
+
+US-002
+
+As a requester,
+I want to track my ticket,
+so that I can know its progress.
+
+
+US-003
+
+As a requester,
+I want to read troubleshooting guides,
+so that I can solve simple problems myself.
+
+
+US-004
+
+As an Administrator,
+I want to manage all tickets,
+so that all IT incidents are centrally controlled.
+
+
+US-005
+
+As an Administrator,
+I want to assign a technician,
+so that responsibility for technical work is recorded.
+
+
+US-006
+
+As an Administrator,
+I want to see technician KPI,
+so that technical performance can be measured.
+
+
+US-007
+
+As an Administrator,
+I want to see recurring problems,
+so that I can identify systemic IT problems.
+
+
+US-008
+
+As an Administrator,
+I want a dashboard,
+so that I can monitor IT support performance.
+
+
+==================================================
+12. ACCEPTANCE CRITERIA
+==================================================
+
+AC-001 CREATE TICKET
+
+Given user berada pada Create Ticket,
+
+When user mengisi seluruh field required dan menekan Submit,
+
+Then system membuat ticket,
+
+And system menghasilkan Ticket Number,
+
+And system menghasilkan Tracking Code.
+
+
+AC-002 REQUIRED FIELD
+
+Given field required kosong,
+
+When user menekan Submit,
+
+Then system menolak submission,
+
+And system menampilkan field yang harus diisi.
+
+
+AC-003 TRACKING
+
+Given user memiliki Ticket Number dan Tracking Code yang valid,
+
+When user melakukan tracking,
+
+Then system menampilkan ticket yang sesuai.
+
+
+AC-004 INVALID TRACKING
+
+Given Ticket Number atau Tracking Code tidak valid,
+
+When user melakukan tracking,
+
+Then system tidak menampilkan data ticket.
+
+
+AC-005 RECEIVE TICKET
+
+Given ticket memiliki status Open,
+
+When Administrator menerima ticket,
+
+Then status menjadi Received,
+
+And aktivitas dicatat pada timeline/audit log.
+
+
+AC-006 ESCALATION
+
+Given ticket berstatus Received,
+
+When Administrator memilih Technician dan melakukan escalation,
+
+Then Technician disimpan pada ticket,
+
+And escalation timestamp disimpan,
+
+And status menjadi Escalated.
+
+
+AC-007 IN PROGRESS
+
+Given ticket sudah di-escalate,
+
+When Administrator menandai pekerjaan mulai ditangani,
+
+Then status menjadi In Progress,
+
+And timestamp dicatat.
+
+
+AC-008 RESOLVE
+
+Given technical work selesai,
+
+When Administrator mengisi resolution notes dan memilih Resolved,
+
+Then status menjadi Resolved,
+
+And resolved timestamp disimpan.
+
+
+AC-009 CLOSE
+
+Given ticket berstatus Resolved,
+
+When Administrator melakukan Close Ticket,
+
+Then status menjadi Closed,
+
+And closed timestamp disimpan.
+
+
+AC-010 NO REOPEN
+
+Given ticket berstatus Closed,
+
+When masalah yang sama terjadi kembali,
+
+Then user harus membuat ticket baru.
+
+System tidak menyediakan Reopened status.
+
+
+AC-011 KPI
+
+Given ticket memiliki timestamp yang diperlukan,
+
+When Administrator memilih periode tertentu,
+
+Then KPI dihitung berdasarkan ticket dalam periode tersebut.
+
+
+==================================================
+13. BUSINESS RULES
+==================================================
+
+BR-001
+Setiap incident/problem baru harus dibuat sebagai ticket baru.
+
+BR-002
+Ticket Closed tidak dapat Reopened.
+
+BR-003
+Recurring problem tetap menjadi ticket baru.
+
+BR-004
+Ticket yang dieskalasikan harus memiliki Technician.
+
+BR-005
+Requester hanya dapat melihat ticket melalui tracking credentials yang valid.
+
+BR-006
+Knowledge Base bersifat optional.
+
+BR-007
+User tidak wajib membaca Knowledge Base sebelum membuat ticket.
+
+BR-008
+Administrator adalah pengelola utama seluruh ticket.
+
+BR-009
+Technician attribution digunakan untuk KPI.
+
+BR-010
+Ticket history tidak boleh hilang ketika ticket berubah status.
+
+BR-011
+SLA target per priority:
+
+[TBD - Business Rule]
+
+
+==================================================
+14. ROLE & PERMISSION MATRIX
+==================================================
+
+FUNCTION                         USER        ADMINISTRATOR
+
+View Knowledge Base              YES         YES
+Search Knowledge Base            YES         YES
+Create Ticket                    YES         YES
+Track Ticket                     YES         YES
+View All Tickets                 NO          YES
+Manage Ticket                    NO          YES
+Change Status                    NO          YES
+Change Priority                  NO          YES
+Change Category                  NO          YES
+Assign Technician                NO          YES
+Resolve Ticket                   NO          YES
+Close Ticket                     NO          YES
+Manage Technician                NO          YES
+Manage Department                NO          YES
+Manage Category                  NO          YES
+Manage Priority                  NO          YES
+Manage Knowledge Base            NO          YES
+Dashboard                        NO          YES
+KPI                              NO          YES
+Reporting                        NO          YES
+Audit Log                        NO          YES
+
+
+==================================================
+15. WORKFLOW
+==================================================
+
+STATUS:
+
+OPEN
+
+Ticket baru dibuat oleh user.
+
+
+RECEIVED
+
+Administrator telah menerima dan meninjau ticket.
+
+
+ESCALATED
+
+Administrator telah menyerahkan ticket kepada Technician.
+
+
+IN PROGRESS
+
+Pekerjaan teknis sedang dilakukan.
+
+
+RESOLVED
+
+Masalah telah diselesaikan dan Administrator telah mencatat hasil penyelesaian.
+
+
+CLOSED
+
+Administrator telah melakukan finalisasi ticket.
+
+
+STATUS TRANSITION:
+
+OPEN
+→ RECEIVED
+
+RECEIVED
+→ ESCALATED
+
+ESCALATED
+→ IN PROGRESS
+
+IN PROGRESS
+→ RESOLVED
+
+RESOLVED
+→ CLOSED
+
+
+Tidak terdapat:
+
+REOPENED
+
+
+Jika terjadi masalah kembali:
+
+NEW TICKET
+
+
+==================================================
+16. DATA REQUIREMENTS
+==================================================
+
+TICKET
+
+- ticket_id
+- ticket_number
+- tracking_code
+- requester_name
+- requester_contact [TBD]
+- department_id
+- category_id
+- problem_type_id
+- priority_id
+- description
+- technician_id
+- status
+- created_at
+- received_at
+- escalated_at
+- in_progress_at
+- resolved_at
+- closed_at
+- resolution_notes
+- updated_at
+
+
+DEPARTMENT
+
+- department_id
+- name
+- status
+- created_at
+- updated_at
+
+
+CATEGORY
+
+- category_id
+- name
+- description
+- status
+- created_at
+- updated_at
+
+
+PROBLEM TYPE
+
+- problem_type_id
+- category_id
+- name
+- description
+- status
+- created_at
+- updated_at
+
+
+PRIORITY
+
+- priority_id
+- name
+- description
+- ordering
+- SLA target [TBD]
+- status
+
+
+TECHNICIAN
+
+- technician_id
+- name
+- team [TBD]
+- contact [TBD]
+- status
+- created_at
+- updated_at
+
+
+KNOWLEDGE ARTICLE
+
+- article_id
+- title
+- category_id
+- content
+- status
+- views
+- created_at
+- updated_at
+- published_at
+
+
+AUDIT LOG
+
+- audit_id
+- actor
+- action
+- entity
+- entity_id
+- timestamp
+- metadata [TBD]
+
+
+==================================================
+17. NOTIFICATION REQUIREMENTS
+==================================================
+
+Setelah ticket berhasil dibuat:
+
+System harus memberikan:
+
+- Ticket Number
+- Tracking Code
+
+Metode tambahan:
+
+- Email [TBD]
+- WhatsApp [TBD]
+- SMS [TBD]
+
+Notification Administrator:
+
+[TBD]
+
+SLA breach notification:
+
+[TBD]
+
+
+==================================================
+18. ERROR HANDLING & EDGE CASES
+==================================================
+
+DOUBLE SUBMIT
+
+Jika user menekan Submit berkali-kali, system harus mencegah pembuatan ticket duplikat akibat request yang sama.
+
+
+INVALID TRACKING
+
+System tidak boleh membocorkan informasi ticket ketika tracking credential salah.
+
+
+SESSION EXPIRED
+
+Administrator diarahkan kembali ke halaman login.
+
+
+UNAUTHORIZED ACCESS
+
+System menolak request.
+
+
+INVALID MASTER DATA
+
+Ticket tidak dapat menggunakan department/category/priority/technician yang sudah tidak aktif.
+
+
+CONCURRENT UPDATE
+
+Jika Administrator melakukan update bersamaan, system harus mencegah kehilangan perubahan secara diam-diam.
+
+Behavior detail:
+
+[TBD]
+
+
+DATABASE UNAVAILABLE
+
+System harus memberikan error yang jelas.
+
+System tidak boleh menampilkan ticket berhasil dibuat jika transaksi sebenarnya gagal.
+
+
+INVALID STATUS TRANSITION
+
+System harus menolak transition yang tidak valid.
+
+
+CLOSED TICKET
+
+Closed ticket tidak dapat Reopened.
+
+
+==================================================
+19. NON-FUNCTIONAL REQUIREMENTS
+==================================================
+
+PERFORMANCE
+
+Target response time:
+
+[TBD]
+
+Target dashboard loading:
+
+[TBD]
+
+
+AVAILABILITY
+
+[TBD]
+
+
+SCALABILITY
+
+System harus dapat menangani pertumbuhan:
+
+- Ticket.
+- Knowledge Article.
+- Technician.
+- Audit Log.
+
+Target volume:
+
+[TBD]
+
+
+USABILITY
+
+Public portal harus:
+
+- Sederhana.
+- Cepat.
+- Minim input.
+- Tidak membutuhkan login.
+
+
+ACCESSIBILITY
+
+[TBD]
+
+
+BROWSER COMPATIBILITY
+
+[TBD]
+
+
+LOGGING
+
+Aktivitas penting Administrator harus dicatat.
+
+
+==================================================
+20. SECURITY REQUIREMENTS
+==================================================
+
+Administrator wajib menggunakan authentication.
+
+Authorization harus membatasi akses Admin Portal.
+
+Tracking endpoint harus menggunakan credential yang tidak mudah ditebak.
+
+Tracking Code harus cukup kuat untuk mencegah enumeration.
+
+Input harus divalidasi.
+
+Output harus di-escape sesuai konteks.
+
+Administrator password harus disimpan menggunakan secure password hashing.
+
+System harus memiliki protection terhadap:
+
+- XSS.
+- CSRF.
+- SQL Injection.
+- Brute Force.
+- Session Hijacking.
+
+Public ticket creation dan tracking harus memiliki rate limiting.
+
+System harus membatasi informasi sensitif yang dapat ditampilkan pada halaman tracking publik.
+
+
+==================================================
+21. INTEGRATION REQUIREMENTS
+==================================================
+
+External integration:
+
+[TBD]
+
+Email:
+
+[TBD]
+
+WhatsApp:
+
+[TBD]
+
+SMS:
+
+[TBD]
+
+Authentication Provider:
+
+[TBD]
+
+Export / Reporting Integration:
+
+[TBD]
+
+
+==================================================
+22. AUDIT & LOGGING
+==================================================
+
+Audit minimal mencatat:
+
+- Ticket creation.
+- Status change.
+- Priority change.
+- Category change.
+- Technician assignment.
+- Escalation.
+- Resolution.
+- Closure.
+- Master data changes.
+- Knowledge Base changes.
+- Administrator authentication.
+- Administrator logout.
+- Aktivitas Administrator penting lainnya.
+
+Audit record minimal:
+
+- Actor.
+- Action.
+- Entity.
+- Entity ID.
+- Timestamp.
+- Metadata [TBD].
+
+Audit log tidak boleh dapat diubah oleh requester.
+
+
+==================================================
+23. SUCCESS METRICS
+==================================================
+
+CORE METRICS
+
+- Total Ticket.
+- Open Ticket.
+- In Progress Ticket.
+- Pending/Waiting Ticket jika nanti diperlukan.
+- Resolved Ticket.
+- Closed Ticket.
+- Overdue Ticket.
+- Ticket Backlog.
+- Average Response Time.
+- Average Resolution Time.
+- Resolution Rate.
+- SLA Compliance.
+- Recurring Problem Frequency.
+- Knowledge Base Usage.
+
+
+TECHNICIAN KPI
+
+- Assigned Tickets.
+- Resolved Tickets.
+- Closed Tickets.
+- Open Tickets.
+- Overdue Tickets.
+- Average Response Time.
+- Average Resolution Time.
+- SLA Compliance.
+- Resolution Rate.
+- Backlog.
+
+
+TARGET BUSINESS METRICS
+
+[TBD - Success Metric]
+
+
+==================================================
+24. KPI & DASHBOARD SPECIFICATION
+==================================================
+
+Dashboard harus menjadi pusat monitoring Administrator.
+
+Dashboard dibagi menjadi tiga area:
+
+1. Executive / Summary KPI
+2. Operational Monitoring
+3. Problem & Knowledge Insight
+
+
+--------------------------------------------------
+24.1 EXECUTIVE SUMMARY KPI
+--------------------------------------------------
+
+KPI Cards:
+
+- Total Tickets.
+- Open Tickets.
+- In Progress.
+- Resolved.
+- Closed.
+- Overdue.
+- Average Response Time.
+- Average Resolution Time.
+- SLA Compliance.
+- Backlog.
+
+
+--------------------------------------------------
+24.2 OPERATIONAL MONITORING
+--------------------------------------------------
+
+GRAPH 1 – TICKET TREND
+
+Menampilkan jumlah ticket berdasarkan waktu.
+
+Dimension:
+
+- Daily.
+- Weekly.
+- Monthly.
+
+Comparison:
+
+- Created.
+- Resolved.
+- Closed.
+
+
+GRAPH 2 – TICKET BY CATEGORY
+
+Menampilkan jumlah ticket berdasarkan category.
+
+
+GRAPH 3 – TICKET BY PRIORITY
+
+Menampilkan:
+
+- Critical [TBD]
+- High [TBD]
+- Medium [TBD]
+- Low [TBD]
+
+
+GRAPH 4 – TICKET BY DEPARTMENT
+
+Menampilkan jumlah ticket berdasarkan department.
+
+
+GRAPH 5 – TICKET BY STATUS
+
+Menampilkan distribusi ticket berdasarkan status.
+
+
+GRAPH 6 – BACKLOG AGING
+
+Contoh grouping:
+
+- 0–1 day.
+- 2–3 days.
+- 4–7 days.
+- >7 days.
+
+Range aktual:
+
+[TBD]
+
+
+GRAPH 7 – SLA PERFORMANCE
+
+Menampilkan:
+
+- SLA Met.
+- SLA Breached.
+
+Target SLA:
+
+[TBD]
+
+
+--------------------------------------------------
+24.3 TECHNICIAN PERFORMANCE
+--------------------------------------------------
+
+Administrator dapat memilih:
+
+- Today.
+- This Week.
+- This Month.
+- Custom Date Range.
+
+KPI per technician:
+
+- Assigned Tickets.
+- Resolved Tickets.
+- Closed Tickets.
+- Open Tickets.
+- Overdue Tickets.
+- Average Response Time.
+- Average Resolution Time.
+- SLA Compliance.
+- Resolution Rate.
+- Backlog.
+
+
+GRAPH:
+
+- Tickets per Technician.
+- Resolved per Technician.
+- Average Resolution Time.
+- SLA Compliance.
+- Backlog per Technician.
+
+
+--------------------------------------------------
+24.4 PROBLEM ANALYTICS
+--------------------------------------------------
+
+Dashboard menampilkan:
+
+- Top Categories.
+- Top Problem Types.
+- Top Recurring Problems.
+- Problems by Department.
+- Problems by Priority.
+- Problems by Period.
+
+
+Contoh insight:
+
+"Network / WiFi / Connection Problem memiliki 27 ticket dalam 30 hari."
+
+
+Tujuan:
+
+- Mengidentifikasi recurring issue.
+- Menentukan prioritas perbaikan.
+- Menentukan kebutuhan replacement.
+- Menentukan preventive action.
+- Menentukan kebutuhan Knowledge Base.
+
+
+--------------------------------------------------
+24.5 KNOWLEDGE BASE ANALYTICS
+--------------------------------------------------
+
+Dashboard dapat menampilkan:
+
+- Total Articles.
+- Article Views.
+- Most Viewed Articles.
+- Popular Search Terms.
+- Unanswered Searches [TBD].
+- Helpful / Not Helpful [TBD].
+- Ticket creation after article view [TBD].
+
+
+Tujuan:
+
+Mengetahui apakah Knowledge Base membantu mengurangi atau menyelesaikan masalah user.
+
+
+==================================================
+25. KPI FORMULA
+==================================================
+
+AVERAGE RESPONSE TIME
+
+Average waktu dari:
+
+Ticket Created
+→ Ticket Received / First Handling
+
+Formula:
+
+Total Response Time / Total Ticket
+
+
+AVERAGE RESOLUTION TIME
+
+Average waktu dari:
+
+Ticket Received / Start Handling
+→ Resolved
+
+Formula:
+
+Total Resolution Time / Resolved Ticket
+
+
+RESOLUTION RATE
+
+Resolved Ticket / Total Ticket × 100%
+
+
+SLA COMPLIANCE
+
+Ticket yang memenuhi SLA / Total Ticket yang memiliki SLA × 100%
+
+
+BACKLOG
+
+Ticket yang belum Closed pada waktu pengukuran.
+
+
+OVERDUE
+
+Ticket yang melewati target SLA.
+
+
+TECHNICIAN RESOLUTION RATE
+
+Ticket Resolved oleh Technician / Ticket Assigned kepada Technician × 100%
+
+
+RECURRING PROBLEM
+
+Jumlah ticket baru dengan kombinasi problem classification yang sama dalam periode tertentu.
+
+Threshold:
+
+[TBD]
+
+
+Catatan:
+
+Formula dapat disesuaikan setelah SLA dan business rules ditetapkan.
+
+
+==================================================
+26. ASSUMPTIONS
+==================================================
+
+[ASSUMPTION]
+
+Hanya Administrator yang login pada MVP.
+
+[ASSUMPTION]
+
+Technician menerima pekerjaan di luar aplikasi dan Administrator mencatat progres serta hasil pekerjaan.
+
+[ASSUMPTION]
+
+User tidak membutuhkan akun untuk tracking.
+
+[ASSUMPTION]
+
+Knowledge Base dapat diakses publik.
+
+[ASSUMPTION]
+
+Recurring issue dianalisis berdasarkan ticket baru.
+
+[ASSUMPTION]
+
+Category dan Problem Type digunakan sebagai dasar analitik masalah.
+
+
+==================================================
+27. DEPENDENCIES
+==================================================
+
+Requirement yang masih bergantung pada keputusan bisnis:
+
+- SLA.
+- Priority definition.
+- Department list.
+- Category list.
+- Problem Type list.
+- Technician list.
+- Tracking mechanism detail.
+- Notification method.
+- Data retention.
+- Attachment policy.
+- External integration.
+- Hosting.
+- Database.
+- Authentication configuration.
+
+
+==================================================
+28. RISKS & MITIGATION
+==================================================
+
+RISK 1
+
+Public tracking dapat disalahgunakan.
+
+MITIGATION:
+
+- Ticket Number + Tracking Code.
+- Rate limiting.
+- Tidak menampilkan data sensitif.
+- Credential tidak mudah ditebak.
+
+
+RISK 2
+
+KPI teknisi tidak akurat.
+
+MITIGATION:
+
+System mencatat timestamp otomatis untuk transition penting.
+
+
+RISK 3
+
+Kategori tidak konsisten.
+
+MITIGATION:
+
+Gunakan master data dan Problem Type terstruktur.
+
+
+RISK 4
+
+Recurring problem sulit dianalisis.
+
+MITIGATION:
+
+Gunakan:
+
+Category
++
+Problem Type
++
+Department
++
+Date
+
+
+RISK 5
+
+Dashboard terlalu banyak grafik tetapi tidak memberikan insight.
+
+MITIGATION:
+
+Dashboard dibagi menjadi:
+
+- Executive Summary.
+- Operational Monitoring.
+- Technician Performance.
+- Problem Insight.
+- Knowledge Base Insight.
+
+
+RISK 6
+
+User memasukkan informasi yang terlalu sedikit.
+
+MITIGATION:
+
+Problem Description wajib dan dapat diberikan placeholder/guidance.
+
+
+==================================================
+29. OPEN QUESTIONS
+==================================================
+
+OQ-001
+
+Apa SLA untuk setiap priority?
+
+[TBD]
+
+
+OQ-002
+
+Apa daftar Category awal?
+
+[TBD]
+
+
+OQ-003
+
+Apa daftar Problem Type awal?
+
+[TBD]
+
+
+OQ-004
+
+Apakah requester perlu memberikan email atau nomor kontak?
+
+[TBD]
+
+
+OQ-005
+
+Apakah ticket mendukung attachment?
+
+[TBD]
+
+
+OQ-006
+
+Jika attachment digunakan, apa batas ukuran dan format?
+
+[TBD]
+
+
+OQ-007
+
+Apakah sistem membutuhkan email notification?
+
+[TBD]
+
+
+OQ-008
+
+Apakah sistem membutuhkan WhatsApp notification?
+
+[TBD]
+
+
+OQ-009
+
+Apakah Technician akan mendapatkan login pada future release?
+
+[TBD]
+
+
+OQ-010
+
+Apakah reporting membutuhkan export CSV/Excel/PDF?
+
+[TBD]
+
+
+OQ-011
+
+Berapa lama audit log dan ticket history disimpan?
+
+[TBD]
+
+
+OQ-012
+
+Berapa target performance dashboard?
+
+[TBD]
+
+
+==================================================
+30. RELEASE PLAN
+==================================================
+
+PHASE 1 – MVP CORE
+
+Public Portal:
+
+- Home.
+- Create Ticket.
+- Track Ticket.
+- Knowledge Base.
+
+Administrator:
+
+- Login.
+- Dashboard dasar.
+- Ticket Management.
+- Technician Management.
+- Department Management.
+- Category Management.
+- Problem Type Management.
+- Priority Management.
+- Knowledge Base Management.
+
+Workflow:
+
+Open
+→ Received
+→ Escalated
+→ In Progress
+→ Resolved
+→ Closed
+
+
+PHASE 2 – ANALYTICS
+
+- Advanced Dashboard.
+- KPI.
+- Technician KPI.
+- Ticket Trend.
+- Category Analytics.
+- Department Analytics.
+- Priority Analytics.
+- Backlog Aging.
+- SLA Analytics.
+- Recurring Problem Analytics.
+- Knowledge Base Analytics.
+
+
+PHASE 3 – FUTURE
+
+[TBD]
+
+Potential:
+
+- Technician Portal.
+- Email notification.
+- WhatsApp.
+- Advanced Reporting.
+- Export.
+- Asset Management.
+- AI Assistance.
+
+
+==================================================
+31. QA CHECKLIST
+==================================================
+
+PUBLIC PORTAL
+
+[ ] User dapat membuka halaman tanpa login.
+
+[ ] User dapat melihat Knowledge Base.
+
+[ ] User dapat mencari Knowledge Base.
+
+[ ] User dapat membuat ticket.
+
+[ ] Required field validation bekerja.
+
+[ ] Ticket Number berhasil dibuat.
+
+[ ] Tracking Code berhasil dibuat.
+
+[ ] User dapat tracking ticket.
+
+[ ] Invalid tracking tidak membocorkan data.
+
+[ ] User tidak dapat melihat ticket user lain.
+
+
+TICKET
+
+[ ] Ticket memiliki status Open setelah dibuat.
+
+[ ] Administrator dapat menerima ticket.
+
+[ ] Status berubah menjadi Received.
+
+[ ] Administrator dapat memilih Technician.
+
+[ ] Technician tersimpan pada ticket.
+
+[ ] Status dapat berubah menjadi Escalated.
+
+[ ] Status dapat berubah menjadi In Progress.
+
+[ ] Resolution Notes dapat disimpan.
+
+[ ] Status dapat berubah menjadi Resolved.
+
+[ ] Administrator dapat Close Ticket.
+
+[ ] Status berubah menjadi Closed.
+
+[ ] Closed ticket tidak dapat Reopened.
+
+[ ] Masalah yang sama dapat dibuat sebagai ticket baru.
+
+
+DASHBOARD
+
+[ ] Total Ticket sesuai data.
+
+[ ] Open sesuai data.
+
+[ ] In Progress sesuai data.
+
+[ ] Resolved sesuai data.
+
+[ ] Closed sesuai data.
+
+[ ] Overdue sesuai SLA.
+
+[ ] Backlog sesuai data.
+
+[ ] Average Response Time benar.
+
+[ ] Average Resolution Time benar.
+
+[ ] SLA Compliance benar.
+
+[ ] Technician KPI benar.
+
+[ ] Category chart benar.
+
+[ ] Priority chart benar.
+
+[ ] Department chart benar.
+
+[ ] Ticket trend benar.
+
+[ ] Recurring problem analytics benar.
+
+[ ] Knowledge Base analytics benar.
+
+
+SECURITY
+
+[ ] Admin authentication bekerja.
+
+[ ] Unauthorized user tidak dapat membuka Admin Portal.
+
+[ ] Tracking Code tidak mudah ditebak.
+
+[ ] Rate limiting diterapkan sesuai requirement.
+
+[ ] Input validation bekerja.
+
+[ ] XSS protection diuji.
+
+[ ] CSRF protection diuji.
+
+[ ] SQL Injection protection diuji.
+
+[ ] Session management diuji.
+
+
+==================================================
+32. DEFINITION OF DONE
+==================================================
+
+Feature dianggap DONE apabila:
+
+1. Functional Requirement sudah diimplementasikan.
+
+2. Acceptance Criteria sudah terpenuhi.
+
+3. Validation sudah tersedia.
+
+4. Error handling sudah tersedia.
+
+5. Authorization sudah sesuai role.
+
+6. Data tersimpan sesuai requirement.
+
+7. Workflow transition sudah benar.
+
+8. Audit log untuk aktivitas penting tersedia.
+
+9. KPI dapat ditelusuri ke data sumber.
+
+10. Dashboard menampilkan data yang benar.
+
+11. QA functional testing lulus.
+
+12. Regression testing lulus.
+
+13. Tidak terdapat Critical/High defect yang belum diselesaikan.
+
+14. UI telah direview.
+
+15. Responsive behavior telah diuji sesuai target platform.
+
+16. Security requirement yang relevan telah diuji.
+
+17. Documentation/update requirement telah dilakukan bila terdapat perubahan.
+
+18. MVP memenuhi keputusan bisnis utama.
+
+
+==================================================
+33. FINAL PRODUCT DECISIONS
+==================================================
+
+Keputusan utama yang sudah disepakati:
+
+1. User tidak perlu login.
+
+2. User hanya memiliki akses public portal.
+
+3. Public portal memiliki:
+   - Knowledge Base.
+   - Create Ticket.
+   - Track Ticket.
+
+4. Knowledge Base bersifat OPTIONAL.
+
+5. User boleh langsung membuat ticket tanpa membaca Knowledge Base.
+
+6. Create Ticket memiliki field utama:
+   - Nama.
+   - Departemen.
+   - Kategori.
+   - Prioritas.
+   - Deskripsi Masalah.
+
+7. User mendapatkan:
+   - Ticket Number.
+   - Tracking Code.
+
+8. Administrator adalah satu-satunya role internal pada MVP.
+
+9. Administrator mengelola seluruh ticket.
+
+10. Administrator melakukan eskalasi kepada Technician.
+
+11. Technician dicatat pada ticket.
+
+12. Technician digunakan untuk KPI.
+
+13. Workflow:
+
+   Open
+   →
+   Received
+   →
+   Escalated
+   →
+   In Progress
+   →
+   Resolved
+   →
+   Closed
+
+14. Tidak terdapat Reopened.
+
+15. Jika masalah muncul kembali, user harus membuat ticket baru.
+
+16. Ticket lama tetap menjadi histori.
+
+17. Recurring problem harus dapat dianalisis.
+
+18. Dashboard harus menyediakan KPI operasional.
+
+19. Dashboard harus menyediakan KPI per Technician.
+
+20. Dashboard harus menyediakan grafik.
+
+21. Dashboard harus menyediakan Backlog Aging.
+
+22. Dashboard harus menyediakan SLA Analytics.
+
+23. Dashboard harus menyediakan Recurring Problem Analytics.
+
+24. Dashboard harus menyediakan Knowledge Base Analytics.
+
+25. Semua requirement yang belum ditentukan harus menggunakan [TBD].
+
+26. Semua asumsi harus menggunakan [ASSUMPTION].
+
+27. Tidak boleh membuat business rule atau angka SLA tanpa keputusan bisnis.
+
+
+==================================================
+END OF PRODUCT REQUIREMENTS DOCUMENT
+==================================================
